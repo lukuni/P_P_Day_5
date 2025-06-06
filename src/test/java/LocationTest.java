@@ -27,4 +27,21 @@ public class LocationTest {
         List<Product> products = loc.getProducts();
         assertFalse(products.contains(p), "Product should be removed");
     }
+    @Test
+    void addNullProduct_shouldThrowException() {
+        Location loc = new Location("TestLocation");
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            loc.addProduct(null);
+        });
+        assertEquals("Product cannot be null", exception.getMessage());
+    }
+
+    @Test
+    void removeNonExistingProduct_shouldNotFail() {
+        Location loc = new Location("TestLocation");
+        Product p = new Product("TestProduct", 100, 1, "Category", "12345");
+        // Removing product which was never added, should do nothing but not fail
+        loc.removeProduct(p);
+        assertTrue(loc.getProducts().isEmpty());
+    }
 }
